@@ -55,7 +55,7 @@ const Home: React.FC = () => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" && !e.nativeEvent.isComposing) {
             sendMessage();
           }
         }}
