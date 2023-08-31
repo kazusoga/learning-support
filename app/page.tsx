@@ -20,13 +20,16 @@ const Home: React.FC = () => {
 
   const sendMessage = () => {
     if (input.trim() !== "") {
-      setMessages([...messages, { text: input, sender: "user" }]);
+      // NOTICE: ステート更新は非同期なので、関数を渡して更新する
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: input, sender: "user" },
+      ]);
       setInput("");
 
       setTimeout(() => {
-        setMessages([
-          ...messages,
-          { text: input, sender: "user" },
+        setMessages((prevMessages) => [
+          ...prevMessages,
           { text: "こんにちは、私はChatGPTです。", sender: "bot" },
         ]);
       }, 1000);
