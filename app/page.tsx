@@ -12,7 +12,8 @@ import {
 import { useChat } from "ai/react";
 
 const Home: React.FC = () => {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, isLoading, handleInputChange, handleSubmit } =
+    useChat();
 
   return (
     <Container maxWidth="sm">
@@ -34,7 +35,12 @@ const Home: React.FC = () => {
           value={input}
           onChange={handleInputChange}
         />
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={isLoading}
+        >
           Send
         </Button>
       </form>
