@@ -1,6 +1,13 @@
 "use client";
 import React from "react";
-import { Container, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Container,
+  List,
+  ListItem,
+  ListItemText,
+  TextField,
+  Button,
+} from "@mui/material";
 // https://sdk.vercel.ai/docs/api-reference/use-chat
 import { useChat } from "ai/react";
 
@@ -21,11 +28,15 @@ const Home: React.FC = () => {
         ))}
       </List>
       <form onSubmit={handleSubmit}>
-        <label>
-          Say something...
-          <input value={input} onChange={handleInputChange} />
-        </label>
-        <button type="submit">Send</button>
+        <TextField
+          fullWidth
+          variant="outlined"
+          value={input}
+          onChange={handleInputChange}
+        />
+        <Button type="submit" variant="contained" color="primary">
+          Send
+        </Button>
       </form>
     </Container>
   );
