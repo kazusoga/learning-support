@@ -1,68 +1,32 @@
 "use client";
-import React, { useState } from "react";
-import {
-  Container,
-  TextField,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
-
-interface Message {
-  text: string;
-  sender: "user" | "bot";
-}
+import React from "react";
+import { Container, List, ListItem, ListItemText } from "@mui/material";
+// https://sdk.vercel.ai/docs/api-reference/use-chat
+import { useChat } from "ai/react";
 
 const Home: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState<string>("");
-
-  const sendMessage = () => {
-    if (input.trim() !== "") {
-      // NOTICE: ステート更新は非同期なので、関数を渡して更新する
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: input, sender: "user" },
-      ]);
-      setInput("");
-
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: "こんにちは、私はChatGPTです。", sender: "bot" },
-        ]);
-      }, 1000);
-    }
-  };
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
 
   return (
     <Container maxWidth="sm">
       <h1>Chat with GPT-4</h1>
       <List>
-        {messages.map((message, index) => (
-          <ListItem key={index}>
+        {messages.map((message) => (
+          <ListItem key={message.id}>
             <ListItemText
-              primary={message.text}
-              secondary={message.sender === "user" ? "You" : "Bot"}
+              primary={message.content}
+              secondary={message.role === "user" ? "You" : "Bot"}
             />
           </ListItem>
         ))}
       </List>
-      <TextField
-        fullWidth
-        variant="outlined"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-            sendMessage();
-          }
-        }}
-      />
-      <Button variant="contained" color="primary" onClick={sendMessage}>
-        Send
-      </Button>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Say something...
+          <input value={input} onChange={handleInputChange} />
+        </label>
+        <button type="submit">Send</button>
+      </form>
     </Container>
   );
 };
